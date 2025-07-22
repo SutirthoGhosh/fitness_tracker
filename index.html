@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitTrack - Workout Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-background text-foreground">
+    <!-- Theme Toggle Button -->
+    <button id="theme-toggle" class="theme-toggle">
+        <span class="sun-icon">☀️</span>
+        <span class="moon-icon">🌙</span>
+    </button>
+
+    <!-- Mobile Header -->
+    <header class="mobile-header lg:hidden">
+        <div class="flex items-center justify-between p-4 border-b border-border">
+            <h1 class="text-xl font-bold">💪 FitTrack</h1>
+        </div>
+    </header>
+
+    <!-- Desktop Sidebar -->
+    <aside class="sidebar hidden lg:flex">
+        <div class="p-6">
+            <h1 class="text-2xl font-bold mb-8">💪 FitTrack</h1>
+            <nav class="space-y-2">
+                <a href="#dashboard" class="nav-link active" data-page="dashboard">
+                    📊 Dashboard
+                </a>
+                <a href="#log-workout" class="nav-link" data-page="log-workout">
+                    ➕ Log Workout
+                </a>
+                <a href="#progress" class="nav-link" data-page="progress">
+                    📈 Progress
+                </a>
+                <a href="#calendar" class="nav-link" data-page="calendar">
+                    📅 Calendar
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Page -->
+        <div id="dashboard-page" class="page active">
+            <div class="page-header">
+                <h2 class="page-title">Dashboard</h2>
+                <p class="page-subtitle">Overview of your fitness journey</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🏋️</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Total Workouts</div>
+                        <div class="stat-value" id="total-workouts">0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⏱️</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Hours Trained</div>
+                        <div class="stat-value" id="hours-trained">0.0</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💪</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Weight Lifted</div>
+                        <div class="stat-value" id="weight-lifted">0 lbs</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-content">
+                        <div class="stat-label">Current Streak</div>
+                        <div class="stat-value" id="current-streak">0 days</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="chart-section">
+                <h3 class="section-title">Weekly Progress</h3>
+                <div class="chart-container">
+                    <canvas id="progress-chart" width="400" height="200"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Workouts -->
+            <div class="recent-workouts">
+                <h3 class="section-title">Recent Workouts</h3>
+                <div id="recent-workouts-list" class="workout-list">
+                    <!-- Recent workouts will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Log Workout Page -->
+        <div id="log-workout-page" class="page">
+            <div class="page-header">
+                <h2 class="page-title">Log Workout</h2>
+                <p class="page-subtitle">Record your training session</p>
+            </div>
+
+            <form id="workout-form" class="workout-form">
+                <div class="form-group">
+                    <label for="workout-date">Date</label>
+                    <input type="date" id="workout-date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="workout-type">Workout Type</label>
+                    <select id="workout-type" required>
+                        <option value="">Select type...</option>
+                        <option value="strength">Strength Training</option>
+                        <option value="cardio">Cardio</option>
+                        <option value="yoga">Yoga</option>
+                        <option value="gripper">Gripper</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="exercise-name">Exercise</label>
+                    <select id="exercise-name" required>
+                        <option value="">Select exercise...</option>
+                    </select>
+                </div>
+
+                <div id="strength-fields" class="form-section hidden">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sets">Sets</label>
+                            <input type="number" id="sets" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="reps">Reps</label>
+                            <input type="number" id="reps" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label for="weight">Weight (lbs)</label>
+                            <input type="number" id="weight" step="0.5" min="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div id="cardio-fields" class="form-section hidden">
+                    <div class="form-group">
+                        <label for="duration">Duration (minutes)</label>
+                        <input type="number" id="duration" min="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Notes (optional)</label>
+                    <textarea id="notes" rows="3" placeholder="How did it feel? Any observations..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary">Log Workout</button>
+            </form>
+        </div>
+
+        <!-- Progress Page -->
+        <div id="progress-page" class="page">
+            <div class="page-header">
+                <h2 class="page-title">Progress</h2>
+                <p class="page-subtitle">Track your fitness improvements</p>
+            </div>
+
+            <div class="progress-stats">
+                <div class="progress-card">
+                    <h3>Personal Records</h3>
+                    <div id="personal-records" class="records-list">
+                        <!-- Personal records will be populated here -->
+                    </div>
+                </div>
+
+                <div class="progress-card">
+                    <h3>Weekly Summary</h3>
+                    <div id="weekly-summary" class="summary-grid">
+                        <!-- Weekly summary will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-section">
+                <h3 class="section-title">Progress Over Time</h3>
+                <div class="chart-container">
+                    <canvas id="detailed-progress-chart" width="400" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calendar Page -->
+        <div id="calendar-page" class="page">
+            <div class="page-header">
+                <h2 class="page-title">Calendar</h2>
+                <p class="page-subtitle">View your workout schedule</p>
+            </div>
+
+            <div class="calendar-controls">
+                <button id="prev-month" class="btn-secondary">‹ Previous</button>
+                <h3 id="current-month" class="calendar-title"></h3>
+                <button id="next-month" class="btn-secondary">Next ›</button>
+            </div>
+
+            <div id="calendar-grid" class="calendar-grid">
+                <!-- Calendar will be populated here -->
+            </div>
+
+            <div id="day-details" class="day-details hidden">
+                <h4 id="selected-date"></h4>
+                <div id="day-workouts" class="day-workouts-list">
+                    <!-- Day workouts will be populated here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Mobile Navigation -->
+    <nav class="mobile-nav lg:hidden">
+        <a href="#dashboard" class="mobile-nav-item active" data-page="dashboard">
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Dashboard</span>
+        </a>
+        <a href="#log-workout" class="mobile-nav-item" data-page="log-workout">
+            <span class="nav-icon">➕</span>
+            <span class="nav-label">Log</span>
+        </a>
+        <a href="#progress" class="mobile-nav-item" data-page="progress">
+            <span class="nav-icon">📈</span>
+            <span class="nav-label">Progress</span>
+        </a>
+        <a href="#calendar" class="mobile-nav-item" data-page="calendar">
+            <span class="nav-icon">📅</span>
+            <span class="nav-label">Calendar</span>
+        </a>
+    </nav>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Workout Logged! 💪</h3>
+            <p>Your workout has been successfully recorded.</p>
+            <button id="modal-close" class="btn-primary">Great!</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
