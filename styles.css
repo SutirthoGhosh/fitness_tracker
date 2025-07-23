@@ -638,3 +638,10 @@ textarea {
     font-size: 1.5rem;
   }
 }
+
+/* ADDED: Fix workout-form padding on small screens */
+@media (max-width: 480px) {
+  .workout-form {
+    padding: 1rem;
+  }
+}
