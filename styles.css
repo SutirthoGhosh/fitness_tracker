@@ -396,9 +396,30 @@ textarea {
   justify-content: center;
 }
 
-#progress-chart, #detailed-progress-chart {
+#progress-chart,
+#detailed-progress-chart {
   max-width: 100%;
   height: auto;
+  background: hsl(var(--background)); /* Ensures canvas background matches theme */
+  border-radius: var(--radius);
+  /* Fallback in case canvas inherits wrong color: */
+  box-shadow: 0 0 0 1px hsl(var(--border));
+}
+
+/* --- CHART DARK MODE PATCH --- */
+.dark #progress-chart,
+.dark #detailed-progress-chart {
+  background: hsl(var(--background));
+  /* Ensures canvas never appears "white" in dark mode */
+  color-scheme: dark;
+  border-radius: var(--radius);
+  box-shadow: 0 0 0 1px hsl(var(--border));
+}
+
+.dark .chart-section {
+  background: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  border: 1px solid hsl(var(--border));
 }
 
 /* Workouts List */
@@ -651,7 +672,7 @@ textarea {
   }
 }
 
-/* ------- DARK MODE PATCHES ------- */
+/* Dark Mode Patches for Key UI */
 .dark .workout-form,
 .dark .modal-content,
 .dark .progress-card,
